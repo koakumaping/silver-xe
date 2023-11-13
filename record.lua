@@ -20,7 +20,7 @@ end
 
 function module.refresh(widget, x, y)
   local _listTable = {}
-  local csv = io.open(string.format('%s%s%s', '/csv/', modelName, '.csv'), 'r')
+  local csv = io.open(string.format('%s%s%s', '/csv/', model.name(), '.csv'), 'r')
   local count = 1
   while csv do
     local line = csv:read('*line')
@@ -44,6 +44,13 @@ function module.refresh(widget, x, y)
       count = count + 1
     end
     lcd.invalidate(moduleX, moduleY, moduleWidth, moduleHeight)
+  end
+end
+
+function module.wakeup(widget)
+  if needRefrshRecords == 1 then
+    needRefrshRecords = 0
+    module.refresh()
   end
 end
 

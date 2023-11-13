@@ -286,7 +286,7 @@ function module.paint(widget, x, y)
 
   lcd.font(FONT_S)
   lcd.color(var.blackColor)
-  lcd.drawText(xStart + 44 + 6 * 7, yStart + 1, modelName)
+  lcd.drawText(xStart + 44 + 6 * 7, yStart + 1, model.name())
   lcd.drawText(moduleWidth - batteryMaskWidth - var.padding - 4, yStart + 1, time, RIGHT)
 end
 

@@ -8,7 +8,6 @@ local loadingMask = lcd.loadMask('./bitmaps/loading.png')
 local themeColor = lcd.themeColor(THEME_FOCUS_COLOR)
 
 local loading = 1
-local recordInit = 0
 
 local w = 320
 local h = 240
@@ -21,11 +20,6 @@ local function loadLib(name)
   return lib
 end
 
-local switch = loadLib('switch')
-local trim = loadLib('trim')
-local top = loadLib('top')
-local record = loadLib('record')
-
 local function name(widget)
   local locale = system.getLocale()
   return translations[locale] or translations['en']
@@ -33,12 +27,14 @@ end
 
 local function create()
   return {
-    source = nil,
-    txPowerSource = nil,
     alpha = 2,
     reserve = 1,
     createTime = os.clock(),
     lastTime = os.clock(),
+    top = loadLib('top'),
+    switch = loadLib('switch'),
+    trim = loadLib('trim'),
+    record = loadLib('record'),
   }
 end
 
@@ -64,14 +60,10 @@ local function wakeup(widget)
     lcd.invalidate()
   end
 
-  if needRefrshRecords == 1 then
-    needRefrshRecords = 0
-    record.refresh()
-  end
-
-  top.wakeup(widget)
-  switch.wakeup(widget)
-  trim.wakeup(widget)
+  widget.top.wakeup(widget)
+  widget.switch.wakeup(widget)
+  widget.trim.wakeup(widget)
+  widget.record.wakeup(widget)
 end
 
 local function paint(widget)
@@ -81,10 +73,10 @@ local function paint(widget)
     lcd.color(themeColor)
     lcd.drawMask(0, 0, loadingMask)
   else
-    top.paint(widget, 0, 8)
-    switch.paint(widget, 0, 32)
-    trim.paint(widget, 91, 32)
-    record.paint(widget, 0, 100)
+    widget.top.paint(widget, 0, 8)
+    widget.switch.paint(widget, 0, 32)
+    widget.trim.paint(widget, 91, 32)
+    widget.record.paint(widget, 0, 100)
   end
 end
 
